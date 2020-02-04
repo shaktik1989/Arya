@@ -1,0 +1,31 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Impacted Entities</th>
+      <th >Severity</th>
+      <th >Alarm Name</th>
+      <th >Message</th>
+      <th >Date & Time</th>
+      <th >Cleared Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @alarms.each do |alarm|%>
+      <tr>
+        <td><% JSON.parse(alarm.values[0].gsub('=>', ':')).each do |key|%>
+              <%=key[0] %>: <%=key[1] %>
+            <% end%>
+        </td>
+        <td><%= alarm.severity %></td>
+        <td><%= alarm&.rule_name_display&.titleize %></td>
+        <td><%= alarm.message %></td>
+        <td><%= alarm.entry_time %></td>
+        <td><%= alarm.cleared_time ? alarm.cleared_time : 'N/A' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="digg_pagination">
+  <%= will_paginate @alarms , :page_links => false %>
+</div>
